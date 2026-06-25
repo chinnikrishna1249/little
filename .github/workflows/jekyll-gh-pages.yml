@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NextGen Career Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#0D0D0D;
+  --ink2:#2E2E2E;
+  --blue:#1A47CC;
+  --blue-light:#EEF2FF;
+  --blue-mid:#3b5fe0;
+  --gold:#F5C400;
+  --green:#00C27C;
+  --red:#E03E3E;
+  --bg:#F5F6FA;
+  --white:#FFFFFF;
+  --border:#E4E6EF;
+  --muted:#6B7280;
+  --radius:18px;
+  --shadow:0 4px 24px rgba(26,71,204,0.08);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;overflow-x:hidden;}
+.container{width:92%;max-width:1280px;margin:auto;}
+
+/* ===== GATE ===== */
+#gate{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0D0D2B 0%,#0a1a5c 40%,#0D0D2B 100%);}
+#gate::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(26,71,204,0.4) 0%,transparent 60%),
+              radial-gradient(ellipse at 80% 20%,rgba(245,196,0,0.15) 0%,transparent 50%);
+  pointer-events:none;}
+#gate-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:48px 48px;}
+.gate-card{position:relative;z-index:10;background:#fff;width:92%;max-width:420px;
+  border-radius:28px;padding:44px 38px 38px;box-shadow:0 40px 100px rgba(0,0,0,0.6);
+  animation:riseIn .6s cubic-bezier(.16,1,.3,1);}
+@keyframes riseIn{from{opacity:0;transform:translateY(32px) scale(.96);}to{opacity:1;transform:none;}}
+.gate-logo{display:flex;align-items:center;gap:12px;margin-bottom:30px;justify-content:center;}
+.gate-logo-box{width:48px;height:48px;background:var(--ink);color:var(--gold);display:flex;align-items:center;
+  justify-content:center;border-radius:14px;font-size:24px;font-weight:900;font-family:'Space Grotesk',sans-serif;}
+.gate-logo-text h2{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;}
+.gate-logo-text p{font-size:10px;letter-spacing:2.5px;color:#999;text-transform:uppercase;}
+.gate-tabs{display:flex;background:#f3f4f6;border-radius:14px;padding:4px;margin-bottom:28px;}
+.gate-tab{flex:1;text-align:center;padding:11px 0;border-radius:11px;font-weight:600;font-size:14px;cursor:pointer;color:#888;transition:.25s;}
+.gate-tab.active{background:var(--ink);color:#fff;}
+.gate-title{font-size:26px;font-weight:800;margin-bottom:6px;font-family:'Space Grotesk',sans-serif;}
+.gate-sub{font-size:13px;color:#888;margin-bottom:24px;line-height:1.6;}
+.gate-field{margin-bottom:14px;}
+.gate-field label{display:block;font-size:11.5px;font-weight:700;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.gate-field input{width:100%;padding:13px 16px;border:1.5px solid #E4E6EF;border-radius:12px;font-size:14px;
+  outline:none;transition:.2s;font-family:'Inter',sans-serif;background:#FAFBFD;}
+.gate-field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,71,204,0.1);}
+.gate-error{display:none;background:#FEF2F2;color:#B91C1C;font-size:12.5px;padding:10px 14px;border-radius:10px;margin-bottom:14px;font-weight:500;}
+.gate-submit{width:100%;padding:15px 0;border:none;border-radius:13px;background:var(--blue);color:#fff;
+  font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;transition:.2s;font-family:'Inter',sans-serif;}
+.gate-submit:hover{background:#1238a8;}
+.gate-foot{text-align:center;font-size:12.5px;color:#999;margin-top:18px;}
+.gate-foot span{color:var(--blue);font-weight:600;cursor:pointer;}
+.gate-form{display:none;}
+.gate-form.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ===== APP ===== */
+#app{display:none;}
+#app.unlocked{display:block;animation:appReveal .6s ease;}
+@keyframes appReveal{from{opacity:0;}to{opacity:1;}}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:1000;}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 0;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-box{width:46px;height:46px;background:var(--ink);color:var(--gold);display:flex;align-items:center;
+  justify-content:center;border-radius:13px;font-size:22px;font-weight:900;font-family:'Space Grotesk',sans-serif;}
+.logo-text h2{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;}
+.logo-text p{font-size:10px;letter-spacing:2px;color:#999;text-transform:uppercase;}
+nav ul{display:flex;list-style:none;gap:22px;}
+nav ul li a{text-decoration:none;color:var(--ink2);font-weight:500;font-size:14px;transition:.2s;}
+nav ul li a:hover{color:var(--blue);}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.user-chip{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:#444;}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.logout-btn{background:var(--ink);color:#fff;padding:9px 18px;border-radius:11px;font-size:13px;font-weight:600;border:none;cursor:pointer;}
+
+/* ===== HERO ===== */
+.hero{padding-top:160px;padding-bottom:100px;
+  background:linear-gradient(160deg,#f0f3ff 0%,#fff8e0 50%,#f0f7ff 100%);
+  position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-60px;right:-120px;width:600px;height:600px;
+  border-radius:50%;background:radial-gradient(circle,rgba(26,71,204,0.08),transparent 70%);}
+.hero::after{content:"";position:absolute;bottom:-80px;left:-100px;width:500px;height:500px;
+  border-radius:50%;background:radial-gradient(circle,rgba(245,196,0,0.1),transparent 70%);}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold);
+  padding:10px 20px;border-radius:50px;font-weight:700;margin-bottom:28px;font-size:13px;}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:72px;font-weight:800;line-height:1.05;}
+.hero h1 span{color:var(--blue);}
+.hero p{max-width:840px;font-size:18px;line-height:1.85;color:var(--muted);margin-top:24px;}
+.hero-btns{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{background:var(--blue);color:#fff;padding:16px 28px;border-radius:14px;
+  text-decoration:none;font-weight:700;font-size:14.5px;display:inline-block;border:none;cursor:pointer;transition:.2s;}
+.btn-primary:hover{background:#1238a8;}
+.btn-outline{border:2px solid var(--ink);padding:16px 28px;border-radius:14px;
+  text-decoration:none;color:var(--ink);font-weight:700;font-size:14.5px;transition:.2s;}
+.btn-outline:hover{background:var(--ink);color:#fff;}
+.hero-stats{display:flex;gap:40px;margin-top:48px;flex-wrap:wrap;}
+.hero-stat h3{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:800;color:var(--blue);}
+.hero-stat p{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+
+/* ===== SECTIONS ===== */
+.section{padding:88px 0;}
+.section-alt{background:var(--white);}
+.eyebrow{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:14px;}
+.eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);}
+.eyebrow-line{width:32px;height:2px;background:var(--gold);}
+.eyebrow-text{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--blue);text-transform:uppercase;}
+.section-title{text-align:center;font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:800;margin-bottom:14px;}
+.section-sub{text-align:center;max-width:720px;margin:0 auto 52px;color:var(--muted);font-size:16px;line-height:1.7;}
+
+/* ===== CARDS ===== */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;}
+.card{background:#fff;padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);
+  border:1px solid var(--border);transition:.3s;}
+.card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(26,71,204,0.12);}
+.card-icon{width:48px;height:48px;border-radius:14px;background:var(--blue-light);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;}
+.card h3{font-family:'Space Grotesk',sans-serif;margin-bottom:10px;font-size:17px;font-weight:700;}
+.card p{font-size:13.5px;color:var(--muted);line-height:1.65;}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;}
+.card-tags span{font-size:11px;background:var(--bg);color:#555;padding:4px 11px;border-radius:50px;font-weight:600;}
+.card.clickable{cursor:pointer;position:relative;overflow:hidden;}
+.card.clickable:active{transform:translateY(-2px) scale(.98);}
+.click-hint{margin-top:14px;font-size:12px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px;}
+.click-hint::after{content:"→";transition:transform .2s;}
+.card.clickable:hover .click-hint::after{transform:translateX(4px);}
+.ripple{position:absolute;border-radius:50%;background:rgba(26,71,204,0.18);transform:scale(0);
+  animation:rippleAnim .55s ease-out;pointer-events:none;}
+@keyframes rippleAnim{to{transform:scale(3.5);opacity:0;}}
+
+/* ===== PROGRESS ===== */
+.progress-card{background:#fff;padding:28px;border-radius:var(--radius);border:1px solid var(--border);}
+.progress-card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px;}
+.progress-track{width:100%;height:10px;background:#eef0f4;border-radius:50px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--blue),var(--blue-mid));}
+.progress-label{display:flex;justify-content:space-between;margin-top:10px;font-size:12.5px;color:#888;font-weight:600;}
+
+/* ===== PRICING ===== */
+.pricing-section{background:var(--ink);color:#fff;}
+.pricing-section .section-title,.pricing-section .section-sub{color:#ddd;}
+.pricing-section .eyebrow-text{color:#9fb1f5;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.price-card{background:#181828;border:1.5px solid #2a2a3e;border-radius:24px;padding:36px 30px;position:relative;transition:.3s;}
+.price-card:hover{transform:translateY(-8px);border-color:var(--blue-mid);}
+.price-card.featured{background:linear-gradient(160deg,#1A47CC,#0a2a85);border-color:var(--blue-mid);}
+.price-badge{position:absolute;top:-14px;right:26px;background:var(--gold);color:var(--ink);
+  font-size:11px;font-weight:800;padding:5px 14px;border-radius:50px;}
+.price-plan{font-size:12px;font-weight:700;letter-spacing:1.5px;color:#9fb1f5;text-transform:uppercase;margin-bottom:12px;}
+.price-card.featured .price-plan{color:var(--gold);}
+.price-amount{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:800;margin-bottom:4px;}
+.price-amount span{font-size:15px;font-weight:400;color:#888;}
+.price-card.featured .price-amount span{color:#cfd8f5;}
+.price-desc{font-size:13px;color:#888;margin-bottom:22px;line-height:1.6;}
+.price-card.featured .price-desc{color:#cfd8f5;}
+.price-features{list-style:none;margin-bottom:26px;}
+.price-features li{font-size:13.5px;padding:9px 0;border-bottom:1px solid #232333;display:flex;gap:10px;color:#ddd;align-items:flex-start;}
+.price-card.featured .price-features li{border-bottom:1px solid rgba(255,255,255,0.12);color:#fff;}
+.price-features li::before{content:"✓";color:var(--green);font-weight:800;flex-shrink:0;}
+.price-btn{display:block;text-align:center;width:100%;padding:14px 0;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none;cursor:pointer;border:none;}
+.price-btn.outline{background:transparent;border:1.5px solid #444;color:#fff;}
+.price-btn.solid{background:var(--gold);color:var(--ink);}
+
+/* ===== AI CHAT ===== */
+#ai-chat-section{background:linear-gradient(160deg,#0D0D2B,#0a1a5c);}
+#ai-chat-section .section-title{color:#fff;}
+#ai-chat-section .section-sub{color:#9fb1f5;}
+.chat-wrapper{max-width:860px;margin:0 auto;}
+.chat-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;overflow:hidden;backdrop-filter:blur(10px);}
+.chat-header{background:rgba(26,71,204,0.8);padding:18px 24px;display:flex;align-items:center;gap:12px;}
+.chat-header-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;}
+.chat-header-info h4{color:#fff;font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif;}
+.chat-header-info p{color:#cfd8f5;font-size:12px;}
+.chat-status{width:8px;height:8px;border-radius:50%;background:var(--green);margin-left:auto;}
+.chat-messages{height:420px;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:4px;}
+.msg{max-width:80%;padding:14px 18px;border-radius:18px;font-size:14px;line-height:1.65;animation:msgIn .3s ease;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.msg.bot{background:rgba(255,255,255,0.1);color:#e8ecff;border-bottom-left-radius:4px;align-self:flex-start;}
+.msg.user{background:var(--blue);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+.msg.bot strong{color:var(--gold);}
+.msg.bot ul{padding-left:18px;margin-top:6px;}
+.msg.bot li{margin-bottom:4px;}
+.chat-typing{display:flex;gap:4px;padding:12px 18px;align-self:flex-start;}
+.chat-typing span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4);animation:bounce 1.2s infinite;}
+.chat-typing span:nth-child(2){animation-delay:.2s;}
+.chat-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-8px);}}
+.chat-quick-btns{padding:12px 24px 0;display:flex;flex-wrap:wrap;gap:8px;}
+.chat-quick-btn{background:rgba(255,255,255,0.08);color:#cfd8f5;border:1px solid rgba(255,255,255,0.15);
+  padding:7px 14px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;font-family:'Inter',sans-serif;}
+.chat-quick-btn:hover{background:rgba(26,71,204,0.5);border-color:var(--blue-mid);color:#fff;}
+.chat-input-row{padding:16px 20px;display:flex;gap:10px;border-top:1px solid rgba(255,255,255,0.08);}
+.chat-input{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  border-radius:12px;padding:13px 16px;color:#fff;font-size:14px;outline:none;font-family:'Inter',sans-serif;}
+.chat-input::placeholder{color:rgba(255,255,255,0.35);}
+.chat-input:focus{border-color:var(--blue-mid);background:rgba(255,255,255,0.12);}
+.chat-send-btn{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:13px 20px;
+  cursor:pointer;font-weight:700;font-size:14px;transition:.2s;font-family:'Inter',sans-serif;}
+.chat-send-btn:hover{background:#1238a8;}
+.chat-send-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* ===== MODAL ===== */
+#modal-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.65);backdrop-filter:blur(4px);
+  z-index:6000;display:none;align-items:center;justify-content:center;padding:20px;}
+#modal-overlay.open{display:flex;animation:fadeIn .2s ease;}
+#modal-box{background:#fff;border-radius:28px;max-width:720px;width:100%;max-height:88vh;overflow-y:auto;
+  padding:40px 38px;position:relative;box-shadow:0 40px 100px rgba(0,0,0,0.45);
+  animation:riseIn .35s cubic-bezier(.16,1,.3,1);}
+#modal-box::-webkit-scrollbar{width:5px;}
+#modal-box::-webkit-scrollbar-thumb{background:#e0e0e0;border-radius:5px;}
+#modal-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;
+  border:none;background:#f3f4f6;font-size:15px;cursor:pointer;font-weight:700;color:#555;transition:.2s;}
+#modal-close:hover{background:#e5e7eb;}
+.modal-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:2px;color:var(--blue);text-transform:uppercase;margin-bottom:8px;}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;margin-bottom:6px;}
+.modal-sub{color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.65;}
+.modal-block{margin-bottom:22px;}
+.modal-block h4{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.modal-steps{list-style:none;counter-reset:step;}
+.modal-steps li{counter-increment:step;padding:12px 0 12px 40px;position:relative;
+  border-bottom:1px solid #f2f3f5;font-size:13.5px;color:#444;line-height:1.6;}
+.modal-steps li:last-child{border-bottom:none;}
+.modal-steps li::before{content:counter(step);position:absolute;left:0;top:10px;width:26px;height:26px;
+  border-radius:50%;background:var(--blue);color:#fff;font-size:11.5px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;}
+.modal-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.modal-pills span{background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:700;padding:6px 14px;border-radius:50px;}
+.modal-pills span.gold{background:#FFF8DB;color:#7a5d00;}
+.modal-pills span.green{background:#E6FAF3;color:#016B48;}
+.modal-pills span.red{background:#FEF2F2;color:#991B1B;}
+.modal-cta{margin-top:8px;display:block;text-align:center;background:var(--blue);color:#fff;
+  padding:14px 0;border-radius:13px;font-weight:700;font-size:14px;border:none;cursor:pointer;width:100%;font-family:'Inter',sans-serif;}
+.round-card{background:var(--bg);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--border);}
+.round-card h5{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.round-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.round-badge{background:var(--blue);color:#fff;font-size:10.5px;font-weight:700;
+  padding:3px 10px;border-radius:50px;letter-spacing:.5px;}
+.round-badge.pass{background:var(--green);}
+.round-badge.warn{background:var(--gold);color:var(--ink);}
+.college-type-tabs{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.ctype-btn{padding:8px 18px;border-radius:50px;border:2px solid var(--border);background:#fff;
+  font-size:13px;font-weight:700;cursor:pointer;transition:.2s;color:var(--ink2);}
+.ctype-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* ===== TEAM / FOOTER ===== */
+footer{background:#111;color:#fff;padding:60px 20px;text-align:center;}
+footer h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;}
+footer p{margin-top:10px;color:#888;}
+
+@media(max-width:768px){
+  .hero h1{font-size:40px;}
+  nav ul{display:none;}
+  #modal-box{padding:28px 20px;}
+  .hero-stats{gap:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== GATE ===== -->
+<div id="gate">
+  <div id="gate-grid"></div>
+  <div class="gate-card">
+    <div class="gate-logo">
+      <div class="gate-logo-box">N</div>
+      <div class="gate-logo-text"><h2>NextGen</h2><p>Career Hub</p></div>
+    </div>
+    <div class="gate-tabs">
+      <div class="gate-tab active" id="tab-login" onclick="switchTab('login')">Log In</div>
+      <div class="gate-tab" id="tab-register" onclick="switchTab('register')">Register</div>
+    </div>
+    <!-- LOGIN -->
+    <div class="gate-form active" id="form-login">
+      <div class="gate-title">Welcome back 👋</div>
+      <div class="gate-sub">Log in to access your dashboard, roadmaps and AI counselor.</div>
+      <div class="gate-error" id="login-error">No account found. Please register first.</div>
+      <div class="gate-field"><label>Email Address</label><input type="email" id="login-email" placeholder="you@example.com"></div>
+      <div class="gate-field"><label>Password</label><input type="password" id="login-password" placeholder="Your password"></div>
+      <button class="gate-submit" onclick="handleLogin()">Log In →</button>
+      <div class="gate-foot">New here? <span onclick="switchTab('register')">Create an account</span></div>
+    </div>
+    <!-- REGISTER -->
+    <div class="gate-form" id="form-register">
+      <div class="gate-title">Join NextGen 🚀</div>
+      <div class="gate-sub">Create your free account and start your career journey today.</div>
+      <div class="gate-error" id="register-error">Please fill all fields.</div>
+      <div class="gate-field"><label>Full Name</label><input type="text" id="register-name" placeholder="Your full name"></div>
+      <div class="gate-field"><label>Email Address</label><input type="email" id="register-email" placeholder="you@example.com"></div>
+      <div class="gate-field"><label>Password</label><input type="password" id="register-password" placeholder="Create a password (min. 6 chars)"></div>
+      <button class="gate-submit" onclick="handleRegister()">Create Account →</button>
+      <div class="gate-foot">Already have an account? <span onclick="switchTab('login')">Log in</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+
+<nav>
+  <div class="container navbar">
+    <div class="logo">
+      <div class="logo-box">N</div>
+      <div class="logo-text"><h2>NextGen</h2><p>Career Hub</p></div>
+    </div>
+    <ul>
+      <li><a href="#technology-hub">Technologies</a></li>
+      <li><a href="#roadmaps">Roadmaps</a></li>
+      <li><a href="#college-dict">Colleges</a></li>
+      <li><a href="#companies">Companies</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="user-chip"><div class="user-avatar" id="nav-avatar">S</div><span id="nav-username">Student</span></div>
+      <button class="logout-btn" onclick="handleLogout()">Log Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">🇮🇳 India's Career Operating System</div>
+    <h1>Learn. Build.<br><span>Get Placed.</span></h1>
+    <p>From after-10th decisions to placement day at TCS, Infosys, Wipro, Deloitte & beyond — one platform guiding you from "what should I study?" to "I got the offer letter." Roadmaps, projects, AI counseling, mock interviews and college guidance, all built around how Indian hiring actually works.</p>
+    <div class="hero-btns">
+      <a href="#ai-chat-section" class="btn-primary">✨ Chat with AI Counselor</a>
+      <a href="#roadmaps" class="btn-outline">Browse Roadmaps</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><h3>5000+</h3><p>Students Guided</p></div>
+      <div class="hero-stat"><h3>1200+</h3><p>Internships Listed</p></div>
+      <div class="hero-stat"><h3>300+</h3><p>Career Roadmaps</p></div>
+      <div class="hero-stat"><h3>25+</h3><p>Certifications</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="section section-alt" id="student-portal">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Your Account</div></div>
+    <h2 class="section-title">Student Dashboard</h2>
+    <p class="section-sub">A live snapshot of where you stand and what to work on next.</p>
+    <div class="cards">
+      <div class="progress-card"><h3>Career Progress — 65%</h3><div class="progress-track"><div class="progress-fill" style="width:65%"></div></div><div class="progress-label"><span>Foundations done</span><span>65/100</span></div></div>
+      <div class="progress-card"><h3>Interview Readiness — 75%</h3><div class="progress-track"><div class="progress-fill" style="width:75%;background:linear-gradient(90deg,#F5C400,#e0b800)"></div></div><div class="progress-label"><span>3 mock rounds left</span><span>75/100</span></div></div>
+      <div class="progress-card"><h3>Resume ATS Score — 82/100</h3><div class="progress-track"><div class="progress-fill" style="width:82%;background:linear-gradient(90deg,#00C27C,#00a066)"></div></div><div class="progress-label"><span>Recruiter-visible</span><span>82/100</span></div></div>
+      <div class="card"><div class="card-icon">🧠</div><h3>Technologies Active</h3><p>AI, Cloud Computing and Full Stack Development tracks in progress.</p></div>
+      <div class="card"><div class="card-icon">🛠️</div><h3>Projects Completed</h3><p>5 projects shipped — AI chatbot, placement predictor, and more.</p></div>
+      <div class="card"><div class="card-icon">🎓</div><h3>Certifications</h3><p>3 certs completed. 2 more recommended for your target roles.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI CHAT -->
+<section class="section" id="ai-chat-section">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot" style="background:#9fb1f5"></div><div class="eyebrow-line"></div><div class="eyebrow-text" style="color:#9fb1f5">Your Mentor</div></div>
+    <h2 class="section-title">NextGen AI Counselor</h2>
+    <p class="section-sub">Ask anything about careers, technologies, roadmaps, projects, colleges, or interview prep. Your AI mentor is always here.</p>
+    <div class="chat-wrapper">
+      <div class="chat-box">
+        <div class="chat-header">
+          <div class="chat-header-avatar">N</div>
+          <div class="chat-header-info"><h4>NextGen AI Counselor</h4><p>Powered by Claude · Career & Tech Expert</p></div>
+          <div class="chat-status"></div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="msg bot">👋 Hi! I'm your <strong>NextGen AI Counselor</strong>. I can help you with:<br><br>
+            • Career roadmaps & guidance<br>
+            • Technology learning paths<br>
+            • Project ideas for your portfolio<br>
+            • College & course selection<br>
+            • Company interview prep<br>
+            • Certifications worth doing<br><br>
+            What would you like to explore today?
+          </div>
+        </div>
+        <div class="chat-quick-btns">
+          <button class="chat-quick-btn" onclick="quickAsk('What career path is best after BTech CSE?')">BTech CSE careers</button>
+          <button class="chat-quick-btn" onclick="quickAsk('Give me a roadmap to become a Data Analyst')">Data Analyst roadmap</button>
+          <button class="chat-quick-btn" onclick="quickAsk('What projects should I build for Full Stack?')">Full Stack projects</button>
+          <button class="chat-quick-btn" onclick="quickAsk('How to crack TCS NQT?')">Crack TCS NQT</button>
+          <button class="chat-quick-btn" onclick="quickAsk('Best colleges for MCA in India?')">MCA colleges</button>
+          <button class="chat-quick-btn" onclick="quickAsk('Which certifications are most valuable for freshers in India?')">Top certifications</button>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="chat-input" placeholder="Ask about roadmaps, colleges, projects, interviews..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="chat-send-btn" id="chat-send" onclick="sendChat()">Send ↑</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH HUB -->
+<section class="section section-alt" id="technology-hub">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Skill Building</div></div>
+    <h2 class="section-title">Technology Learning Hub</h2>
+    <p class="section-sub">12 structured tracks from beginner to job-ready. Click any track for the full curriculum, certs, and projects.</p>
+    <div class="cards" id="tech-cards"></div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Stand Out</div></div>
+    <h2 class="section-title">25 Certifications Worth Completing</h2>
+    <p class="section-sub">Recruiters scan for these by name. Click any cert to see details, when to take it, and what roles it unlocks.</p>
+    <div class="cards" id="cert-cards"></div>
+  </div>
+</section>
+
+<!-- ROADMAPS -->
+<section class="section section-alt" id="roadmaps">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">The Path, Mapped</div></div>
+    <h2 class="section-title">Career Roadmaps</h2>
+    <p class="section-sub">Step-by-step paths to your dream role. Click to see every milestone, what to learn, and the proof project.</p>
+    <div class="cards" id="roadmap-cards"></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Build, Don't Just Learn</div></div>
+    <h2 class="section-title">Project Recommendation Center</h2>
+    <p class="section-sub">Portfolio projects picked to match what recruiters actually ask about. Click a category for specific ideas.</p>
+    <div class="cards" id="project-cards"></div>
+  </div>
+</section>
+<!-- COLLEGE DICTIONARY -->
+<section class="section section-alt" id="college-dict">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Academic Guide</div></div>
+    <h2 class="section-title">College & Course Dictionary</h2>
+    <p class="section-sub">Explore degree options, top courses, and India's best universities — for graduation and post-graduation. Click any course to learn more.</p>
+    <div class="college-type-tabs">
+      <button class="ctype-btn active" onclick="showCollegeType('ug')">🎓 Graduation (UG)</button>
+      <button class="ctype-btn" onclick="showCollegeType('pg')">🏛️ Post-Graduation (PG)</button>
+    </div>
+    <div id="college-ug-section">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;color:var(--blue)">Bachelor's Degrees</h3>
+      <p style="color:var(--muted);font-size:13.5px;margin-bottom:24px;">Choose your path — Technology (B.Tech/BCA/BSc) or Management/Science. Each leads to different career outcomes.</p>
+      <div class="cards" id="ug-cards"></div>
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin:36px 0 18px;color:var(--ink)">🏆 Top 10 Universities for UG (India)</h3>
+      <div class="cards" id="ug-colleges"></div>
+    </div>
+    <div id="college-pg-section" style="display:none;">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;color:var(--blue)">Post-Graduate Degrees</h3>
+      <p style="color:var(--muted);font-size:13.5px;margin-bottom:24px;">Advance your career with the right PG degree. MBA, MCA, M.Tech and more.</p>
+      <div class="cards" id="pg-cards"></div>
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin:36px 0 18px;color:var(--ink)">🏆 Top 10 Universities for PG (India)</h3>
+      <div class="cards" id="pg-colleges"></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERNSHIPS -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Get Hired</div></div>
+    <h2 class="section-title">Internship & Placement Hub</h2>
+    <p class="section-sub">Trending IT and Non-IT opportunities. Click any role to see the skills recruiters screen for.</p>
+    <div class="cards" id="internship-cards"></div>
+  </div>
+</section>
+
+<!-- COMPANY INTERVIEW HUB -->
+<section class="section section-alt" id="companies">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Know the Process</div></div>
+    <h2 class="section-title">Company Interview Hub</h2>
+    <p class="section-sub">Click any company to see every round, passing marks, what topics are tested, and exactly what you need ready.</p>
+    <div class="cards" id="company-cards"></div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">First Impression</div></div>
+    <h2 class="section-title">Resume Builder</h2>
+    <p class="section-sub">Your resume is the first filter. Click any card for exact steps to nail it.</p>
+    <div class="cards" id="resume-cards"></div>
+  </div>
+</section>
+
+<!-- SKILL CHARTS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Where You Stand</div></div>
+    <h2 class="section-title">Your Skill Snapshot</h2>
+    <p class="section-sub">A visual of where your effort has gone and where the gaps are.</p>
+    <div class="cards" style="grid-template-columns:1.3fr 1fr;">
+      <div class="progress-card"><h3>Skill Hours by Track</h3><canvas id="skillChart" height="220"></canvas></div>
+      <div class="progress-card"><h3>Readiness Breakdown</h3><canvas id="readinessChart" height="220"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing-section" id="pricing">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot" style="background:#3b5fe0"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Plans</div></div>
+    <h2 class="section-title">Simple, honest pricing</h2>
+    <p class="section-sub">Start free. Upgrade only when you need more — no tricks before placement season.</p>
+    <div class="pricing-grid">
+      <div class="price-card"><div class="price-plan">Free</div><div class="price-amount">₹0 <span>/ forever</span></div><div class="price-desc">Explore the platform and get started.</div><ul class="price-features"><li>All Career Roadmaps</li><li>Basic Resume Builder</li><li>5 Company Hub previews</li><li>College Dictionary access</li></ul><a href="#" class="price-btn outline">Start Free</a></div>
+      <div class="price-card featured"><div class="price-badge">MOST POPULAR</div><div class="price-plan">Pro</div><div class="price-amount">₹499 <span>/ month</span></div><div class="price-desc">For students actively preparing for placements.</div><ul class="price-features"><li>Everything in Free</li><li>Full Tech Learning Hub</li><li>All Company Interview content</li><li>ATS Resume Score & Review</li><li>5 Mock Interviews / month</li><li>AI Counselor unlimited chats</li></ul><a href="#" class="price-btn solid">Go Pro</a></div>
+      <div class="price-card"><div class="price-plan">Premium</div><div class="price-amount">₹999 <span>/ month</span></div><div class="price-desc">1:1 guidance, not just self-paced content.</div><ul class="price-features"><li>Everything in Pro</li><li>Unlimited Mock Interviews</li><li>1:1 Resume Review</li><li>Priority Job Alerts</li><li>Direct mentor sessions</li></ul><a href="#" class="price-btn outline">Go Premium</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Behind the Platform</div></div>
+    <h2 class="section-title">Our Team</h2>
+    <div class="cards">
+      <div class="card"><div class="card-icon">👨‍💻</div><h3>Komara Chinni Krishna</h3><p>Founder & Website Owner</p></div>
+      <div class="card"><div class="card-icon">👩‍💼</div><h3>Nikitha</h3><p>Co-Founder</p></div>
+      <div class="card"><div class="card-icon">⚙️</div><h3>Rajasekar</h3><p>Technical Lead</p></div>
+      <div class="card"><div class="card-icon">📚</div><h3>Gayatri</h3><p>Content & Research Lead</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-line"></div><div class="eyebrow-text">Reach Us</div></div>
+    <h2 class="section-title">Contact Us</h2>
+    <div class="cards">
+      <div class="card"><div class="card-icon">📱</div><h3>Phone</h3><p>+91 7981388026</p></div>
+      <div class="card"><div class="card-icon">✉️</div><h3>Email</h3><p>chinnikrishna1249@gmail.com</p></div>
+      <div class="card"><div class="card-icon">📍</div><h3>Location</h3><p>Srikakulam, Andhra Pradesh, India</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h2>NextGen Career Hub</h2>
+  <p>Learn • Build • Achieve Your Dream Career</p>
+  <p style="margin-top:6px;">©️ 2026 NextGen Career Hub. All Rights Reserved.</p>
+</footer>
+
+</div><!-- /#app -->
+
+<!-- MODAL -->
+<div id="modal-overlay">
+  <div id="modal-box">
+    <button id="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+/* ===================== DATA ===================== */
+const techData=[
+  {icon:"🤖",name:"Artificial Intelligence",tags:["High demand","6-8 weeks"],
+   desc:"AI fundamentals, generative AI, LLMs and chatbot-building through real projects.",
+   modules:["AI foundations & terminology","Prompt engineering & LLM basics","Working with AI APIs (OpenAI/Anthropic)","Building a rule-based chatbot","Building an LLM-powered chatbot","Capstone: deploy your AI assistant"],
+   certs:["Microsoft AI-900","Google AI Essentials"],
+   projects:["AI career guidance chatbot","Resume screening assistant","FAQ chatbot for a college website"]},
+  {icon:"📊",name:"Machine Learning",tags:["Core skill","8-10 weeks"],
+   desc:"Supervised learning, deep learning, model building and deployment — first model to a working API.",
+   modules:["Python for ML (NumPy, Pandas)","Supervised learning","Model evaluation & tuning","Intro to neural networks","Deploying a model as an API","Capstone: predictive model end-to-end"],
+   certs:["Google ML Crash Course Cert","AWS ML Foundations"],
+   projects:["House price prediction model","Placement prediction system","Spam email classifier"]},
+  {icon:"🐍",name:"Data Science",tags:["Analyst track","6 weeks"],
+   desc:"Python, Pandas, NumPy, visualization and analytics with real datasets.",
+   modules:["Python fundamentals for data","Data cleaning & wrangling","Exploratory data analysis","Visualization (Matplotlib/Seaborn)","Statistics for data science","Capstone: end-to-end analysis report"],
+   certs:["IBM Data Science Cert","Google Data Analytics Cert"],
+   projects:["Sales trend dashboard","Student performance analysis","COVID data visualization"]},
+  {icon:"☁️",name:"Cloud Computing",tags:["Most-requested","6 weeks"],
+   desc:"AWS, Azure, Google Cloud and architecture fundamentals every fresher is now expected to know.",
+   modules:["Cloud concepts & service models","Compute, storage & networking basics","IAM & security fundamentals","Hands-on AWS/Azure labs","Cloud deployment basics","Capstone: deploy a web app to cloud"],
+   certs:["AWS Cloud Practitioner","Microsoft AZ-900"],
+   projects:["Portfolio site on AWS S3","Serverless contact-form app","Cloud cost-monitoring dashboard"]},
+  {icon:"🛡️",name:"Cyber Security",tags:["Growing field","8 weeks"],
+   desc:"Network security, ethical hacking and threat analysis with hands-on lab simulations.",
+   modules:["Networking fundamentals","Security principles & CIA triad","Ethical hacking basics","Vulnerability scanning labs","Incident response basics","Capstone: security audit report"],
+   certs:["CompTIA Security+","Cisco Cybersecurity Essentials"],
+   projects:["Network vulnerability assessment","Phishing-awareness simulator","Basic SOC monitoring dashboard"]},
+  {icon:"💻",name:"Full Stack Development",tags:["Most popular","10-12 weeks"],
+   desc:"HTML, CSS, JavaScript, React, Node.js and databases — enough to ship a real product end to end.",
+   modules:["HTML/CSS fundamentals","JavaScript & DOM","React fundamentals & hooks","Node.js & Express APIs","MongoDB/SQL databases","Capstone: full MERN application"],
+   certs:["Meta Front-End Developer Cert","freeCodeCamp Full Stack Cert"],
+   projects:["E-commerce site (MERN)","Portfolio website","Task management app"]},
+  {icon:"🔁",name:"DevOps",tags:["Infra track","6 weeks"],
+   desc:"CI/CD pipelines, Docker, Kubernetes, GitHub workflows and deployment automation.",
+   modules:["Linux & shell scripting","Git/GitHub workflows","Docker fundamentals","CI/CD pipelines","Kubernetes basics","Capstone: automated deployment pipeline"],
+   certs:["Docker Certified Associate","GitHub Actions Cert"],
+   projects:["Dockerized web app","CI/CD pipeline for a sample repo","Kubernetes cluster deployment"]},
+  {icon:"🏭",name:"SAP",tags:["ERP track","6-8 weeks"],
+   desc:"SAP FICO, MM, SD and core enterprise resource planning for ERP-focused roles.",
+   modules:["ERP fundamentals","SAP navigation basics","SAP FICO essentials","SAP MM essentials","SAP SD essentials","Capstone: ERP scenario walkthrough"],
+   certs:["SAP Certified Associate (entry)"],
+   projects:["Mock procurement cycle in SAP MM","Sample financial reporting in FICO"]},
+  {icon:"🧪",name:"Software Testing",tags:["QA track","6 weeks"],
+   desc:"Manual testing, automation testing and Selenium for QA-fresher interviews.",
+   modules:["Manual testing fundamentals","Test case design","Bug reporting & tracking","Automation basics with Selenium","API testing basics","Capstone: full test suite for sample app"],
+   certs:["ISTQB Foundation Level"],
+   projects:["Manual test plan for e-commerce flow","Selenium automation suite","API test collection (Postman)"]},
+  {icon:"📈",name:"Business Analytics",tags:["High ROI","5-6 weeks"],
+   desc:"Power BI, Excel, SQL and BI skills hiring managers actually screen for.",
+   modules:["Advanced Excel for analytics","SQL fundamentals","Power BI dashboards","Business metrics & KPIs","Storytelling with data","Capstone: business dashboard project"],
+   certs:["Microsoft Power BI Cert","Google Data Analytics Cert"],
+   projects:["Sales performance dashboard","HR attrition analysis","Inventory tracking dashboard"]},
+  {icon:"🎨",name:"UI / UX Design",tags:["Creative track","5 weeks"],
+   desc:"Wireframing, prototyping, Figma fundamentals and user-experience thinking.",
+   modules:["Design thinking basics","Wireframing fundamentals","Figma essentials","Prototyping & user flows","Usability testing basics","Capstone: full app prototype"],
+   certs:["Google UX Design Cert"],
+   projects:["Mobile app prototype in Figma","Website redesign case study","Usability test report"]},
+  {icon:"⛓️",name:"Blockchain & IoT",tags:["Emerging","6-8 weeks"],
+   desc:"Smart contracts, Web3 basics and IoT solution design for emerging-tech roles.",
+   modules:["Blockchain fundamentals","Smart contract basics (Solidity)","Web3 wallets & dApps","IoT architecture basics","Sensor & microcontroller basics","Capstone: simple dApp or IoT prototype"],
+   certs:["Blockchain Council Associate Cert"],
+   projects:["Simple voting dApp","IoT temperature monitor prototype"]}
+];
+
+const certData=[
+  {name:"AWS Cloud Practitioner",by:"Amazon Web Services",stage:"After Cloud Computing track",unlocks:"Cloud, DevOps, Support roles"},
+  {name:"AWS Solutions Architect Associate",by:"Amazon Web Services",stage:"After 2+ cloud projects",unlocks:"Cloud Engineer roles"},
+  {name:"Microsoft Azure AZ-900",by:"Microsoft",stage:"Early — no prerequisites",unlocks:"Microsoft-stack & support roles"},
+  {name:"Microsoft Azure Administrator (AZ-104)",by:"Microsoft",stage:"After AZ-900",unlocks:"Cloud Admin roles"},
+  {name:"Google Cloud Digital Leader",by:"Google Cloud",stage:"Early — no prerequisites",unlocks:"Cloud, product, analyst roles"},
+  {name:"Google Data Analytics Certificate",by:"Google / Coursera",stage:"Alongside Data Science track",unlocks:"Data Analyst roles"},
+  {name:"Google UX Design Certificate",by:"Google / Coursera",stage:"Alongside UI/UX track",unlocks:"UX/UI Designer roles"},
+  {name:"Google AI Essentials",by:"Google",stage:"Early — no prerequisites",unlocks:"AI-adjacent roles"},
+  {name:"Microsoft AI-900",by:"Microsoft",stage:"Alongside AI track",unlocks:"AI/ML fresher roles"},
+  {name:"IBM Data Science Professional Cert",by:"IBM / Coursera",stage:"After Data Science basics",unlocks:"Data Scientist/Analyst roles"},
+  {name:"Meta Front-End Developer Cert",by:"Meta / Coursera",stage:"After HTML/CSS/JS basics",unlocks:"Frontend Developer roles"},
+  {name:"Meta Back-End Developer Cert",by:"Meta / Coursera",stage:"After Node.js basics",unlocks:"Backend Developer roles"},
+  {name:"freeCodeCamp Full Stack Cert",by:"freeCodeCamp",stage:"Alongside Full Stack track",unlocks:"MERN/Full Stack roles"},
+  {name:"CCNA",by:"Cisco",stage:"After networking basics",unlocks:"Network/Infra roles"},
+  {name:"Cisco Cybersecurity Essentials",by:"Cisco",stage:"Early in Security track",unlocks:"SOC Analyst roles"},
+  {name:"CompTIA Security+",by:"CompTIA",stage:"After Cyber Security track",unlocks:"Security Analyst roles"},
+  {name:"ISTQB Foundation Level",by:"ISTQB",stage:"Alongside Testing track",unlocks:"QA/Testing roles"},
+  {name:"Oracle Certified Associate (Java)",by:"Oracle",stage:"After core Java",unlocks:"Java Developer roles"},
+  {name:"Oracle Database SQL Certified",by:"Oracle",stage:"After SQL basics",unlocks:"Database/Analyst roles"},
+  {name:"SAP Certified Associate",by:"SAP",stage:"After SAP track basics",unlocks:"ERP Consultant roles"},
+  {name:"Microsoft Power BI Data Analyst",by:"Microsoft",stage:"Alongside Business Analytics",unlocks:"BI Analyst roles"},
+  {name:"HubSpot Inbound Marketing Cert",by:"HubSpot Academy",stage:"For Non-IT/marketing path",unlocks:"Digital Marketing roles"},
+  {name:"Salesforce Associate Certification",by:"Salesforce",stage:"For CRM/Non-IT path",unlocks:"CRM/Support Analyst roles"},
+  {name:"Docker Certified Associate",by:"Docker",stage:"Alongside DevOps track",unlocks:"DevOps Engineer roles"},
+  {name:"PMI CAPM",by:"PMI",stage:"Late-stage, for leads",unlocks:"Project Coordinator roles"}
+];
+
+const roadmapData=[
+  {name:"Software Developer",timeline:"6-9 months",steps:["Pick one language deeply (Java, Python or JS) and master core syntax + OOP","Learn data structures & algorithms — arrays, linked lists, trees, recursion","Build 2-3 small console/CLI projects to lock in fundamentals","Learn Git/GitHub and contribute to one open-source or personal repo","Study DSA patterns (sliding window, two pointers, DP basics)","Build one larger portfolio project end-to-end","Do 5+ mock technical interviews","Apply to fresher SDE-1 roles"]},
+  {name:"Web Developer",timeline:"4-6 months",steps:["HTML5 + CSS3 fundamentals — flexbox, grid, responsive","JavaScript — DOM, events, async/fetch","React — components, hooks, state management","Node.js + Express for basic APIs","Connect to MongoDB or MySQL","Build one full project: frontend + backend + database","Deploy on Vercel/Netlify + Render","Apply to Frontend/Full Stack fresher roles"]},
+  {name:"Data Analyst",timeline:"3-5 months",steps:["Advanced Excel — pivot tables, formulas, charts","SQL fundamentals — joins, aggregations, subqueries","Python basics for data (Pandas, NumPy)","Data visualization — Power BI or Tableau","Statistics fundamentals for business context","Build one dashboard project from a real dataset","Practice case-study interview questions","Apply to Data Analyst / Business Analyst fresher roles"]},
+  {name:"Data Scientist",timeline:"7-10 months",steps:["Python fundamentals + Pandas/NumPy","Statistics & probability for ML","Supervised learning algorithms & evaluation","Deep learning fundamentals","Model deployment (Flask/FastAPI)","Build one full ML project end-to-end with deployment","Practice ML case studies and SQL rounds","Apply to Data Scientist / ML fresher roles"]},
+  {name:"Cloud Engineer",timeline:"5-7 months",steps:["Linux fundamentals & shell scripting","Networking basics — IP, DNS, load balancing","Pick one cloud (AWS or Azure) and get foundational cert","Hands-on labs: compute, storage, IAM","Infrastructure as Code basics (Terraform)","Docker + basic CI/CD","Build one deployed cloud project","Apply to Cloud Support / Cloud Engineer roles"]},
+  {name:"Cyber Security Analyst",timeline:"6-8 months",steps:["Networking fundamentals — TCP/IP, firewalls, VPNs","Security fundamentals — CIA triad, common attacks","Hands-on labs — vulnerability scanning, packet analysis","Ethical hacking basics (lab-based only)","SIEM/SOC monitoring fundamentals","Get CompTIA Security+ or Cisco Cybersecurity Essentials","Build one security audit project","Apply to SOC Analyst / Security Analyst roles"]}
+];
+
+const projectData=[
+  {name:"AI Projects",ideas:["Career guidance chatbot (Flask + NLTK/spaCy)","Resume-job matching recommender","Image recognition app using pretrained model","FAQ/support chatbot for a college site","Sentiment analysis dashboard","AI-powered study planner"]},
+  {name:"Data Science Projects",ideas:["Sales forecasting model","Student/employee attrition analysis","Interactive analytics dashboard (Power BI/Tableau)","Customer segmentation with clustering","Stock price trend analysis","Fraud detection system"]},
+  {name:"Web Development Projects",ideas:["MERN e-commerce site with cart","Personal portfolio with contact form","Task/project management app","Blog platform with auth and comments","Online food ordering system","College notice board with admin panel"]},
+  {name:"Cloud Projects",ideas:["Static site deployed on AWS S3 + CloudFront","Serverless contact form (Lambda + API Gateway)","CI/CD pipeline deploying to cloud VM","Cost-monitoring dashboard","Multi-region web app with failover","Serverless image processing pipeline"]},
+  {name:"Cyber Security Projects",ideas:["Network vulnerability assessment report","Phishing-awareness simulator/quiz","Basic SOC dashboard mockup","Password strength auditor tool","Log analysis & anomaly detection","VPN setup and testing lab"]},
+  {name:"Industry Projects",ideas:["Inventory management for a small business","Hospital appointment booking system","HR onboarding workflow automation","Library management system with fines","School fee management portal","Bus tracking system prototype"]}
+];
+
+const resumeData=[
+  {name:"ATS Resume Templates",steps:["Use single-column layout — avoid tables, text boxes, graphics","Stick to standard fonts (Calibri, Arial) at 10.5-11pt","Use standard headers: Summary, Skills, Experience, Projects, Education","Save and submit as PDF unless JD asks for .docx","Run through an ATS checker before every application","Include a LinkedIn and GitHub link with correct URLs"]},
+  {name:"Resume Writing Guide",steps:["Start each bullet with a strong action verb (Built, Led, Automated, Reduced)","Quantify impact wherever possible (%, time saved, users, scale)","Mirror 3-5 exact keywords from the job description","Keep bullets to 1-2 lines — cut filler words ruthlessly","Order sections by relevance to target role, not just chronology","Keep it to 1 page for freshers — no exceptions"]},
+  {name:"Resume Review Checklist",steps:["Check ATS parse-ability — copy-paste to plain text and verify no breakage","Verify keyword match against the specific job description","Check consistent tense, spacing and bullet punctuation","Confirm contact info, LinkedIn and GitHub are correct and clickable","Get a second review — typos hide from the person who wrote them","Re-check after every version change before submitting"]}
+];
+
+const internshipData=[
+  {name:"IT — Full Stack / MERN",type:"IT",hot:true,desc:"Highest fresher demand right now. React + Node.js + MongoDB internships at startups and mid-size IT firms.",skills:["React.js","Node.js","MongoDB","REST APIs","Git"]},
+  {name:"IT — Data Analyst / BI",type:"IT",hot:true,desc:"Strong demand from analytics teams. SQL + Excel + one BI tool is the common ask.",skills:["SQL","Excel","Power BI","Python basics"]},
+  {name:"IT — QA / Software Testing",type:"IT",hot:false,desc:"Steady fresher demand, lower competition than dev roles. Manual testing fundamentals get you in.",skills:["Manual Testing","Selenium basics","Bug tracking","Test case design"]},
+  {name:"IT — Cloud Support / DevOps",type:"IT",hot:true,desc:"Fast-growing. A foundational AWS/Azure cert plus basic Linux skills stand out.",skills:["AWS/Azure basics","Linux","Docker basics","Networking"]},
+  {name:"Non-IT — Voice/Non-Voice Process",type:"Non-IT",hot:true,desc:"High-volume hiring at BPOs and process companies. Communication and typing speed matter most.",skills:["Communication","Typing speed","Customer handling","Basic MS Office"]},
+  {name:"Non-IT — Operations / Back Office",type:"Non-IT",hot:false,desc:"Process-driven roles in operations — data entry, documentation and workflow coordination.",skills:["MS Excel","Attention to detail","Process documentation"]},
+  {name:"Non-IT — HR / Recruitment Support",type:"Non-IT",hot:false,desc:"Entry-level HR coordination — screening, scheduling and onboarding support.",skills:["Communication","MS Office","Basic HRMS tools"]},
+  {name:"Non-IT — Digital Marketing",type:"Non-IT",hot:true,desc:"Growing demand from businesses and agencies. Certifications carry real weight here.",skills:["SEO basics","Social media","Content writing","Analytics basics"]}
+];
+
+const companyData=[
+  {name:"TCS",logo:"TCS",description:"India's largest IT employer. Hires through TCS NQT (National Qualifier Test) for freshers across India.",salary:"₹3.36 – 7 LPA",rounds:[
+    {name:"Round 1: TCS NQT Online Test",type:"Aptitude",duration:"180 mins",topics:"Numerical Ability, Verbal Ability, Reasoning, Coding (2 questions), Advanced Coding (for Ninja track)",passing:"Numerical: 60%+ | Verbal: 60%+ | Reasoning: 60%+ | Coding: at least 1 fully correct",tips:"Practise TCS NQT previous papers. Focus on basic aptitude and one coding language."},
+    {name:"Round 2: Technical Interview",type:"Technical",duration:"30-45 mins",topics:"OOPs concepts, DBMS basics, OS fundamentals, your programming language, your projects",passing:"No fixed marks — assessed on clarity and depth. Must explain at least 1 project end-to-end.",tips:"Prepare OOPs with Java/Python examples. Be ready to explain your project architecture clearly."},
+    {name:"Round 3: Managerial Round",type:"Managerial",duration:"20-30 mins",topics:"Situation-based questions, teamwork examples, why TCS, relocation willingness",passing:"Communication and attitude assessment — no technical marks.",tips:"Use STAR format. Show flexibility about location and shifts."},
+    {name:"Round 4: HR Round",type:"HR",duration:"15-20 mins",topics:"Salary expectations, bond signing (initial training bond), career goals, background verification",passing:"Formality round — focus on honesty and confidence.",tips:"Know TCS's 2-year service agreement for freshers. Be honest about your background."}
+  ],need:["At least 1 working project you can explain end-to-end","Solid basics in Java/Python/C++","SQL fundamentals (joins, normalization)","Clear, confident communication in English","60% aggregate in graduation — mandatory eligibility"]},
+
+  {name:"Infosys",logo:"INF",description:"India's second-largest IT services company. Hires freshers as Systems Engineer through InfyTQ platform.",salary:"₹3.6 – 8 LPA",rounds:[
+    {name:"Round 1: Online Test",type:"Aptitude",duration:"95 mins",topics:"Quantitative Aptitude (10Q), Logical Reasoning (15Q), Verbal English (20Q), Pseudocode (5Q), Puzzle (5Q)",passing:"Sectional cutoffs apply — roughly 60-65% per section. Overall score matters for shortlisting.",tips:"Pseudocode section is unique to Infosys — practise reading code logic without running it."},
+    {name:"Round 2: Coding Test (SP & DSE tracks)",type:"Technical",duration:"3 hours",topics:"2 coding problems — easy to medium difficulty. Java, Python, C++ allowed.",passing:"At least 1 problem fully passing all test cases strongly recommended.",tips:"For Systems Engineer track: no coding round. DSE (Digital Specialist Engineer) has coding."},
+    {name:"Round 3: Technical Interview",type:"Technical",duration:"30-45 mins",topics:"DBMS, OS, OOPs, core CS fundamentals, project deep-dive, SDLC awareness",passing:"No numeric score — overall depth and clarity assessed.",tips:"Know ACID properties, normalization, process vs thread, polymorphism with examples."},
+    {name:"Round 4: HR Interview",type:"HR",duration:"15-25 mins",topics:"Flexibility, career goals, Infosys culture, relocation, background check",passing:"Attitude, communication, and cultural fit.",tips:"Research Infosys values and recent news. Express enthusiasm for continuous learning."}
+  ],need:["Strong fundamentals in DBMS, OS and OOPs","1-2 portfolio projects with clear explanation","Basic awareness of SDLC","65% aggregate across academics — mandatory","Register on InfyTQ portal and complete assessments early"]},
+
+  {name:"Wipro",logo:"WIP",description:"One of India's top 3 IT companies. Freshers join as Project Engineer through the WILP or NLTH process.",salary:"₹3.5 – 6.5 LPA",rounds:[
+    {name:"Round 1: Online Aptitude Test",type:"Aptitude",duration:"60 mins",topics:"Verbal (22Q), Aptitude (18Q), Essay Writing (1 topic, 200-300 words)",passing:"Verbal: ~65% | Aptitude: ~60% | Essay: assessed for grammar and structure",tips:"Essay topic is often current affairs or situational. Write 3 structured paragraphs."},
+    {name:"Round 2: Online Coding Test",type:"Coding",duration:"60 mins",topics:"2 coding problems — beginner to intermediate. Data structures, basic algorithms.",passing:"Partial credit available. Aim to pass all test cases for at least 1 problem.",tips:"Wipro allows Java, Python, C, C++. Focus on array and string problems first."},
+    {name:"Round 3: Technical Interview",type:"Technical",duration:"30-40 mins",topics:"Basic programming, OOPs, DBMS, your project, HR-style situation questions mixed in",passing:"Project explanation is crucial. Must demo at least one feature confidently.",tips:"Prepare a 3-minute project walkthrough covering problem → solution → tech stack → output."},
+    {name:"Round 4: HR Interview",type:"HR",duration:"15-20 mins",topics:"Service agreement (3.5 year bond for WILP), relocation, salary, communication",passing:"Formality — honesty about the bond is important.",tips:"The Wipro Elite NLTH process doesn't have a bond. Clarify which track you applied to."}
+  ],need:["For IT: basic programming + DBMS","For Non-IT: tool familiarity + shift flexibility","Clear written and verbal English","60% aggregate throughout academics","No active backlogs at time of joining"]},
+
+  {name:"Accenture",logo:"ACC",description:"Global professional services firm. Hires freshers as Application Development Associate (ADA) and ASE.",salary:"₹4.5 – 8 LPA",rounds:[
+    {name:"Round 1: Cognitive & Technical Assessment",type:"Aptitude",duration:"90 mins",topics:"Cognitive (Critical Thinking, Verbal, Quantitative) + Technical MCQs on basics (OOPS, DBMS, Networks)",passing:"Cognitive: ~70% recommended | Technical: ~60% per section. Strong sectional cutoffs.",tips:"The cognitive section is adaptive — later questions are harder if you're doing well. Don't rush early Qs."},
+    {name:"Round 2: Coding Assessment",type:"Coding",duration:"45 mins",topics:"2 problems — beginner to intermediate. Loops, arrays, strings, basic DS.",passing:"Both problems passing all test cases is the target. Partial credit given.",tips:"Accenture tests pseudocode as well. Read problem statements twice before coding."},
+    {name:"Round 3: Communication Test",type:"Communication",duration:"30 mins",topics:"Read-aloud passage, fill-in-the-blanks, essay writing on a given topic",passing:"Assessed for grammar, pronunciation (read-aloud) and written clarity.",tips:"Practise reading English aloud. Use active voice in the essay. 150-250 words is the target."},
+    {name:"Round 4: HR Interview",type:"HR",duration:"20-30 mins",topics:"STAR-format behavioral questions, role awareness, JD-specific skills, career goals",passing:"Attitude, role-fit and communication assessed.",tips:"Research the specific role (ADA vs ASE vs Analyst). Tailor your STAR examples to the JD."}
+  ],need:["Role-specific tool knowledge from the JD","1+ project mapped to the JD's tech stack","STAR-method answers for behavioral questions","60% aggregate throughout academics","Valid ID proof for background verification"]},
+
+  {name:"Cognizant",logo:"COG",description:"Hires freshers via GenC (general) and GenC Next (tech-focused) tracks with different difficulty levels.",salary:"₹4 – 7 LPA",rounds:[
+    {name:"Round 1: Aptitude Assessment",type:"Aptitude",duration:"75 mins",topics:"Quant, Logical, Verbal (GenC) | + Data Interpretation, Analytical Reasoning (GenC Next)",passing:"Roughly 65% per section for GenC | 70-75% for GenC Next due to higher competition.",tips:"GenC Next is the premium track with higher pay. Choose based on your prep level."},
+    {name:"Round 2: Coding Test (GenC Next)",type:"Coding",duration:"60 mins",topics:"2 coding problems covering arrays, strings, recursion, basic DP",passing:"Full pass on at least 1 problem strongly recommended for GenC Next.",tips:"GenC general track doesn't have a dedicated coding test — only pseudocode in Round 1."},
+    {name:"Round 3: Technical Interview",type:"Technical",duration:"30-45 mins",topics:"Fundamentals (OOP, DBMS, OS), project walkthrough, basic coding on whiteboard",passing:"Clear project explanation is essential. Show one working demo feature.",tips:"Cognizant interviewers often go deep on one topic. Know your project tech stack inside out."},
+    {name:"Round 4: HR Interview",type:"HR",duration:"15-20 mins",topics:"Career aspirations, relocation, strengths/weaknesses, company awareness",passing:"Communication and attitude focused.",tips:"Mention awareness of Cognizant's ESG and sustainability initiatives — they value it."}
+  ],need:["DSA basics for GenC Next track","One demonstrable project","Good aptitude/logical reasoning practice","60%+ throughout academics","Apply early — slots fill up fast during drives"]},
+
+  {name:"Capgemini",logo:"CAP",description:"French MNC with strong India operations. Hires freshers as Analyst/Associate via campus and off-campus drives.",salary:"₹3.8 – 6.5 LPA",rounds:[
+    {name:"Round 1: Aptitude + Pseudocode Test",type:"Aptitude",duration:"95 mins",topics:"Quantitative, Logical, Verbal, Pseudocode/Coding MCQs (no actual coding environment)",passing:"60-65% per section. Pseudocode section catches many off guard — practise it.",tips:"Pseudocode questions test reading logic, not writing code. Read every line carefully."},
+    {name:"Round 2: Essay Writing",type:"Communication",duration:"20 mins",topics:"One topic — usually a social/business issue. 200-250 words expected.",passing:"Grammar, structure and relevance assessed. No fixed marks.",tips:"Write intro → 2 body paragraphs → conclusion. Avoid bullet points in essays."},
+    {name:"Round 3: Technical Interview",type:"Technical",duration:"30-40 mins",topics:"Programming fundamentals, OOPs, your project, basic DBMS",passing:"Project walkthrough is the main focus. Know your code well.",tips:"Capgemini often asks 'what would you do differently?' about your project — have a good answer."},
+    {name:"Round 4: HR Interview",type:"HR",duration:"15-20 mins",topics:"Career path, domain awareness, relocation, Capgemini culture",passing:"Cultural fit and flexibility assessed.",tips:"Research Capgemini's 'Get the Future You Want' brand and core values."}
+  ],need:["Programming fundamentals","Clear project walkthrough","Domain awareness for your target practice","60% aggregate in graduation","No backlogs at joining time"]},
+
+  {name:"Deloitte",logo:"DEL",description:"Big 4 consulting/technology firm. Hires freshers as Business Technology Analyst (BTA) and Analyst roles.",salary:"₹6 – 12 LPA",rounds:[
+    {name:"Round 1: Aptitude / Case Assessment",type:"Aptitude",duration:"90 mins",topics:"Quantitative, Verbal, Logical + Business case analysis questions",passing:"70%+ recommended. Case section is harder than typical IT company tests.",tips:"Deloitte's case questions test business thinking, not just math. Read business context carefully."},
+    {name:"Round 2: Technical/Domain Interview",type:"Technical",duration:"40-60 mins",topics:"Role-specific: tech roles get CS fundamentals; consulting roles get case questions + Excel/Analytics",passing:"Depth in your chosen domain. Must show problem-solving approach, not just answers.",tips:"For tech roles: prep DBMS, OOPs, SQL. For analytics: prep Excel formulas and chart reading."},
+    {name:"Round 3: Group Discussion (some roles)",type:"Group",duration:"20-30 mins",topics:"Current affairs, business case, or ethical dilemma topic",passing:"Assessed on communication, listening, leadership and logical contribution.",tips:"Speak clearly, listen actively, and build on others' points rather than just repeating yourself."},
+    {name:"Round 4: HR / Partner Round",type:"HR",duration:"20-30 mins",topics:"Why Deloitte, leadership examples, career goals, case follow-ups",passing:"Confidence, articulation and cultural alignment.",tips:"Know Deloitte's service lines (Audit, Consulting, Tax, Advisory). Say which interests you and why."}
+  ],need:["Strong analytical and case-solving ability","Business communication skills","Domain awareness for your role (tech or analytics)","Consistent academic record — GPA matters at Deloitte","Internship experience adds significant advantage"]},
+
+  {name:"Wipro Non-IT",logo:"WNI",description:"Wipro's operations and support roles for graduates from any stream. Hires for voice process, back-office, and data entry roles.",salary:"₹2.5 – 4 LPA",rounds:[
+    {name:"Round 1: Aptitude & Typing Test",type:"Aptitude",duration:"45 mins",topics:"Basic Quant, Verbal, Logical + Typing test (25-30 WPM required)",passing:"Aptitude: ~55% | Typing: 25 WPM minimum with <5 errors",tips:"Practise typing on any free online platform daily for 1-2 weeks before the test."},
+    {name:"Round 2: Communication Assessment",type:"Communication",duration:"20 mins",topics:"Read-aloud passage, conversation scenarios, written comprehension",passing:"Clarity, accent neutrality and grammar assessed.",tips:"Avoid regional language influence in English. Speak at a measured pace."},
+    {name:"Round 3: Process / HR Interview",type:"HR",duration:"20-30 mins",topics:"Shift flexibility (24/7 for BPO roles), tools knowledge (Excel, email), customer handling examples",passing:"Attitude and flexibility are the main assessment criteria.",tips:"Mention any customer-facing experience — even college fests or part-time work counts."}
+  ],need:["For ops: tool familiarity (Excel, email)","For voice: neutral accent and good grammar","Typing speed 25+ WPM","Shift flexibility (especially night shifts for international process)","Any graduation degree acceptable"]}
+];
+
+const ugData=[
+  {name:"B.Tech — Computer Science Engineering (CSE)",duration:"4 years",type:"Engineering",
+   desc:"India's most in-demand degree. Covers programming, data structures, algorithms, databases, OS, networking and software engineering.",
+   topCourses:["Data Structures & Algorithms","Database Management Systems","Operating Systems","Computer Networks","Software Engineering","Machine Learning Fundamentals"],
+   careerPaths:["Software Developer","Data Scientist","Cloud Engineer","DevOps Engineer","AI/ML Engineer"],
+   avgSalary:"₹3.5 – 8 LPA (fresher)"},
+  {name:"BCA — Bachelor of Computer Applications",duration:"3 years",type:"Science/Tech",
+   desc:"Best 3-year alternative to B.Tech. Strong programming focus, suitable for IT roles at top MNCs.",
+   topCourses:["Programming in C/Java/Python","Web Technologies","Database Management","Computer Networks","Software Testing","Project Management"],
+   careerPaths:["Full Stack Developer","Web Developer","QA Engineer","System Analyst","IT Support"],
+   avgSalary:"₹2.5 – 5 LPA (fresher)"},
+  {name:"BSc Computer Science",duration:"3 years",type:"Science",
+   desc:"Theory-heavy but solid foundation. Good for those targeting teaching, research or later pursuing MCA/MSc.",
+   topCourses:["Programming Fundamentals","Discrete Mathematics","Digital Electronics","Data Structures","Operating Systems","Computer Graphics"],
+   careerPaths:["IT Support","Junior Developer","Data Entry Analyst","Research Assistant","MSc/MCA bridge"],
+   avgSalary:"₹2 – 4 LPA (fresher)"},
+  {name:"B.Tech — Information Technology (IT)",duration:"4 years",type:"Engineering",
+   desc:"Similar to CSE with more focus on networking, web technologies and information systems.",
+   topCourses:["Information Security","Web Technologies","ERP Systems","Networking","Cloud Computing Basics","IT Project Management"],
+   careerPaths:["Network Administrator","IT Analyst","System Engineer","Cloud Support","Web Developer"],
+   avgSalary:"₹3 – 7 LPA (fresher)"},
+  {name:"B.Tech — Electronics & Communication (ECE)",duration:"4 years",type:"Engineering",
+   desc:"Strong for VLSI, embedded systems, IoT and telecom sectors. Also eligible for IT company drives.",
+   topCourses:["Digital Signal Processing","Embedded Systems","VLSI Design","Microprocessors","Communication Systems","IoT Fundamentals"],
+   careerPaths:["Embedded Systems Engineer","VLSI Designer","Network Engineer","IoT Developer","IT Support Engineer"],
+   avgSalary:"₹3 – 6 LPA (fresher)"}
+];
+
+const pgData=[
+  {name:"MBA — Master of Business Administration",duration:"2 years",type:"Management",
+   desc:"India's most popular PG degree. Opens doors to management, consulting, finance, marketing and product roles. IIM/XLRI top the rankings.",
+   specializations:["Finance","Marketing","Human Resources","Operations","Business Analytics","Information Technology"],
+   topExams:["CAT","XAT","GMAT","MAT","CMAT"],
+   careerPaths:["Product Manager","Business Analyst","Consultant","Marketing Manager","HR Manager","Finance Analyst"],
+   avgSalary:"₹8 – 25 LPA (top colleges)"},
+  {name:"MCA — Master of Computer Applications",duration:"2 years (after BCA/BSc) or 3 years",type:"Technology",
+   desc:"Best PG for non-B.Tech students entering IT. Treated equivalent to B.Tech by most Indian IT companies.",
+   topCourses:["Advanced Data Structures","Software Engineering","Cloud Computing","Machine Learning","Web Technologies","Project Management"],
+   topExams:["NIMCET","JNU MCA","Pune University MCA","State-level entrance tests"],
+   careerPaths:["Software Developer","Full Stack Developer","Data Analyst","System Analyst","IT Consultant"],
+   avgSalary:"₹3.5 – 8 LPA (fresher)"},
+  {name:"M.Tech — Computer Science",duration:"2 years",type:"Engineering",
+   desc:"Research-oriented degree for deep technical specialization. Gateway to PSU jobs, faculty positions and R&D roles.",
+   specializations:["Artificial Intelligence & ML","Cyber Security","Data Science","Computer Networks","Software Engineering","Cloud Computing"],
+   topExams:["GATE (CS/IT)"],
+   careerPaths:["Research Scientist","Senior Developer","AI Engineer","University Faculty","PSU Technical roles"],
+   avgSalary:"₹5 – 15 LPA (with GATE score)"},
+  {name:"MSc Data Science / AI",duration:"2 years",type:"Science",
+   desc:"Rapidly growing PG option at IITs, NITs and private universities. Combines statistics, ML and programming.",
+   topCourses:["Statistical Learning","Deep Learning","Natural Language Processing","Big Data Technologies","Research Methodology","Capstone Project"],
+   topExams:["IIT JAM","University-specific entrance tests","CUET PG"],
+   careerPaths:["Data Scientist","ML Engineer","Research Analyst","AI Product Manager","Data Engineer"],
+   avgSalary:"₹6 – 18 LPA"},
+  {name:"MSc Cyber Security",duration:"2 years",type:"Science/Tech",
+   desc:"Specialized degree for a sector with massive demand and low supply of qualified professionals in India.",
+   topCourses:["Network Security","Ethical Hacking","Forensic Analysis","Cryptography","Risk Management","Security Operations"],
+   topExams:["University-specific entrance","GATE (CS)"],
+   careerPaths:["SOC Analyst","Penetration Tester","Security Architect","CISO (long-term)","Cyber Forensic Analyst"],
+   avgSalary:"₹5 – 14 LPA (fresher)"}
+];
+
+const ugColleges=[
+  {name:"IIT Bombay",rank:"#1 NIRF Engineering 2024",location:"Mumbai, Maharashtra",note:"Entrance: JEE Advanced. Top for CSE, ECE, IT. Placement avg: ₹20+ LPA"},
+  {name:"IIT Delhi",rank:"#2 NIRF Engineering",location:"New Delhi",note:"Top for CSE and ECE. Strong industry research collaborations. Placement avg: ₹18+ LPA"},
+  {name:"IIT Madras",rank:"#3 NIRF Engineering",location:"Chennai, Tamil Nadu",note:"Strong in Data Science and AI research. IITM Pravartak research park on campus."},
+  {name:"NIT Trichy",rank:"Top NIT — NIRF Rank 9",location:"Tiruchirappalli, Tamil Nadu",note:"Entrance: JEE Main. Best NIT for IT/CSE in South India. Placements at TCS, Infosys, Google."},
+  {name:"BITS Pilani",rank:"Top Private — NIRF Rank 24",location:"Pilani, Rajasthan",note:"Entrance: BITSAT. Industry-integrated PS (Practice School) program is a major advantage."},
+  {name:"VIT Vellore",rank:"Top Private University",location:"Vellore, Tamil Nadu",note:"Entrance: VITEEE. Huge placement record — 18,000+ offers from top MNCs annually."},
+  {name:"SRM Institute of Science & Technology",rank:"NIRF Rank ~50",location:"Chennai, Tamil Nadu",note:"Entrance: SRMJEEE. Strong placement cell. IBM, TCS, Wipro regular recruiters."},
+  {name:"Manipal Institute of Technology",rank:"Top Private Engineering",location:"Manipal, Karnataka",note:"Entrance: MET. Strong alumni network. 90%+ placement record in CSE."},
+  {name:"Amrita Vishwa Vidyapeetham",rank:"NIRF Rank 7 (Universities)",location:"Coimbatore, Tamil Nadu",note:"Research-focused. Strong in Cyber Security and AI. Well regarded for South India placements."},
+  {name:"Anna University",rank:"Top State University",location:"Chennai, Tamil Nadu",note:"Entrance: TNEA. Covers 600+ affiliated colleges. Gold standard for Tamil Nadu engineering graduates."}
+];
+
+const pgColleges=[
+  {name:"IIM Ahmedabad",rank:"#1 MBA — NIRF Management 2024",location:"Ahmedabad, Gujarat",note:"Entrance: CAT. India's top MBA. Average placement: ₹35+ LPA. Dream destination for MBA aspirants."},
+  {name:"IIM Bangalore",rank:"#2 MBA — NIRF Management",location:"Bangalore, Karnataka",note:"Strong in finance and consulting. Average placement: ₹33+ LPA. Also offers MIM program."},
+  {name:"IIM Calcutta",rank:"#3 MBA — NIRF Management",location:"Kolkata, West Bengal",note:"Oldest IIM. Finance specialization is industry gold. Average placement: ₹32+ LPA."},
+  {name:"XLRI Xavier School of Management",rank:"Top 5 MBA — non-IIM",location:"Jamshedpur, Jharkhand",note:"Entrance: XAT. Best for HR and Business Management. Strong industrial relations program."},
+  {name:"IIT Delhi — M.Tech",rank:"#1 GATE-based M.Tech",location:"New Delhi",note:"For GATE qualifiers. Stipend-based program. Research + industry placement. Avg: ₹15+ LPA."},
+  {name:"NIT Trichy — MCA/M.Tech",rank:"Top NIT PG",location:"Tiruchirappalli, Tamil Nadu",note:"Entrance: NIMCET (MCA) / GATE (M.Tech). Strong South India IT placements."},
+  {name:"NIMCET Colleges (NITs)",rank:"Top MCA Program",location:"Pan-India NITs",note:"NIMCET entrance qualifies you for MCA at NIT Trichy, Warangal, Surathkal, Allahabad and more."},
+  {name:"Symbiosis International University",rank:"Top Private MBA",location:"Pune, Maharashtra",note:"Entrance: SNAP. Strong marketing and operations programs. Good placement record for private MBA."},
+  {name:"SP Jain Institute of Management",rank:"Top 10 Private MBA",location:"Mumbai / Dubai / Singapore",note:"Known for global MBA exposure. Strong finance and strategy specializations."},
+  {name:"Delhi University — MSc Data Science",rank:"Top Public PG",location:"New Delhi",note:"Entrance: CUET PG. Strong faculty. Affordable fees with quality research output."}
+];
+
+/* ===================== RENDER ===================== */
+function renderCards(id,items,type,getMeta){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=items.map((item,i)=>{
+    const m=getMeta(item);
+    return `<div class="card clickable" onclick="cardClick(event,'${type}',${i})">
+      ${m.icon?`<div class="card-icon">${m.icon}</div>`:""}
+      <h3>${m.title}</h3><p>${m.desc}</p>
+      ${m.tags?`<div class="card-tags">${m.tags.map(t=>`<span>${t}</span>`).join("")}</div>`:""}
+      <div class="click-hint">${m.hint||"View details"}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderSimpleCards(id,items){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=items.map(c=>`<div class="card">
+    <div class="card-icon">🏫</div>
+    <h3>${c.name}</h3>
+    <div class="card-tags"><span>${c.rank}</span><span>${c.location}</span></div>
+    <p style="margin-top:10px;font-size:13px;color:var(--muted);">${c.note}</p>
+  </div>`).join("");
+}
+
+function showCollegeType(t){
+  document.getElementById('college-ug-section').style.display=t==='ug'?'block':'none';
+  document.getElementById('college-pg-section').style.display=t==='pg'?'block':'none';
+  document.querySelectorAll('.ctype-btn').forEach((b,i)=>{b.classList.toggle('active',(t==='ug'&&i===0)||(t==='pg'&&i===1));});
+}
+
+function initInteractive(){
+  renderCards('tech-cards',techData,'tech',d=>({icon:d.icon,title:d.name,desc:d.desc,tags:d.tags,hint:"View curriculum & projects"}));
+  renderCards('cert-cards',certData,'cert',d=>({title:d.name,desc:`Issued by ${d.by}. Best taken: ${d.stage}.`,hint:"View details & roles unlocked"}));
+  renderCards('roadmap-cards',roadmapData,'roadmap',d=>({title:d.name,desc:`${d.timeline} • ${d.steps.length} milestones.`,hint:"View full roadmap"}));
+  renderCards('project-cards',projectData,'project',d=>({title:d.name,desc:`${d.ideas.length} project ideas for your portfolio.`,hint:"View project ideas"}));
+  renderCards('resume-cards',resumeData,'resume',d=>({title:d.name,desc:`${d.steps.length}-step checklist.`,hint:"View the steps"}));
+  renderCards('internship-cards',internshipData,'internship',d=>({title:d.name+(d.hot?" 🔥":""),desc:d.desc,tags:[d.type,d.hot?"Trending now":"Steady demand"],hint:"View required skills"}));
+  renderCards('company-cards',companyData,'company',d=>({title:d.name,desc:`${d.rounds.length} rounds · ${d.salary} · Click for full round breakdown`,hint:"View all rounds & marks"}));
+  renderCards('ug-cards',ugData,'ugcourse',d=>({title:d.name,desc:`${d.duration} · ${d.type}. ${d.desc.substring(0,90)}...`,tags:[d.duration,d.type],hint:"View courses & careers"}));
+  renderCards('pg-cards',pgData,'pgcourse',d=>({title:d.name,desc:`${d.duration} · ${d.type}. ${d.desc.substring(0,90)}...`,tags:[d.duration,d.type],hint:"View details & exams"}));
+  renderSimpleCards('ug-colleges',ugColleges);
+  renderSimpleCards('pg-colleges',pgColleges);
+  initCharts();
+}
+
+/* ===================== MODAL ===================== */
+function cardClick(e,type,i){spawnRipple(e);openModal(type,i);}
+
+function spawnRipple(e){
+  const c=e.currentTarget;const r=document.createElement('span');r.className='ripple';
+  const rect=c.getBoundingClientRect();const size=Math.max(rect.width,rect.height);
+  r.style.width=r.style.height=size+'px';
+  r.style.left=(e.clientX-rect.left-size/2)+'px';r.style.top=(e.clientY-rect.top-size/2)+'px';
+  c.appendChild(r);setTimeout(()=>r.remove(),600);
+}
+function openModal(type,i){
+  let html="";
+  if(type==='tech'){
+    const d=techData[i];
+    html=`<div class="modal-eyebrow">Technology Track</div><div class="modal-title">${d.icon} ${d.name}</div>
+    <div class="modal-sub">${d.desc}</div>
+    <div class="card-tags" style="margin-bottom:20px">${d.tags.map(t=>`<span class="modal-pills"><span>${t}</span></span>`).join("")}</div>
+    <div class="modal-block"><h4>📘 Course Curriculum</h4><ul class="modal-steps">${d.modules.map(m=>`<li>${m}</li>`).join("")}</ul></div>
+    <div class="modal-block"><h4>🎓 Recommended Certifications</h4><div class="modal-pills">${d.certs.map(c=>`<span class="gold">${c}</span>`).join("")}</div></div>
+    <div class="modal-block"><h4>🛠️ Projects to Build</h4><ul class="modal-steps">${d.projects.map(p=>`<li>${p}</li>`).join("")}</ul></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='Give me a detailed ${d.name} learning plan';document.getElementById('chat-input').focus();document.getElementById('ai-chat-section').scrollIntoView({behavior:'smooth'})">✨ Ask AI Counselor about ${d.name}</button>`;
+  }else if(type==='cert'){
+    const d=certData[i];
+    html=`<div class="modal-eyebrow">Certification ${i+1} of 25</div><div class="modal-title">${d.name}</div>
+    <div class="modal-sub">Issued by <strong>${d.by}</strong>.</div>
+    <div class="modal-block"><h4>📍 When to take it</h4><div class="modal-pills"><span>${d.stage}</span></div></div>
+    <div class="modal-block"><h4>🔓 Roles it unlocks</h4><div class="modal-pills"><span class="green">${d.unlocks}</span></div></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='How do I prepare for ${d.name}?';sendChat()">✨ Ask AI: How to prepare for ${d.name}</button>`;
+  }else if(type==='roadmap'){
+    const d=roadmapData[i];
+    html=`<div class="modal-eyebrow">Career Roadmap</div><div class="modal-title">🗺️ ${d.name}</div>
+    <div class="modal-sub">Typical timeline: <strong>${d.timeline}</strong></div>
+    <div class="modal-block"><h4>🪜 Step-by-step path</h4><ul class="modal-steps">${d.steps.map(s=>`<li>${s}</li>`).join("")}</ul></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='Give me a detailed weekly plan for the ${d.name} roadmap';sendChat()">✨ Ask AI for a detailed weekly plan</button>`;
+  }else if(type==='project'){
+    const d=projectData[i];
+    html=`<div class="modal-eyebrow">Project Category</div><div class="modal-title">🛠️ ${d.name}</div>
+    <div class="modal-sub">Build these to stand out in your portfolio and interviews.</div>
+    <div class="modal-block"><h4>💡 Project Ideas</h4><ul class="modal-steps">${d.ideas.map(p=>`<li>${p}</li>`).join("")}</ul></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='How do I build a ${d.ideas[0]}? Give me a step by step guide';sendChat()">✨ Ask AI: How to build one of these</button>`;
+  }else if(type==='resume'){
+    const d=resumeData[i];
+    html=`<div class="modal-eyebrow">Resume Builder</div><div class="modal-title">📄 ${d.name}</div>
+    <div class="modal-block"><h4>✅ Steps to follow</h4><ul class="modal-steps">${d.steps.map(s=>`<li>${s}</li>`).join("")}</ul></div>`;
+  }else if(type==='internship'){
+    const d=internshipData[i];
+    html=`<div class="modal-eyebrow">${d.type} Internship — ${d.hot?"Trending now":"Steady demand"}</div><div class="modal-title">${d.name}</div>
+    <div class="modal-sub">${d.desc}</div>
+    <div class="modal-block"><h4>🧩 Skills recruiters screen for</h4><div class="modal-pills">${d.skills.map(s=>`<span>${s}</span>`).join("")}</div></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='How do I get an internship in ${d.name}?';sendChat()">✨ Ask AI: How to get this internship</button>`;
+  }else if(type==='company'){
+    const d=companyData[i];
+    html=`<div class="modal-eyebrow">Company Interview Process</div><div class="modal-title">🏢 ${d.name}</div>
+    <div class="modal-sub">${d.description}</div>
+    <div class="modal-pills" style="margin-bottom:20px"><span class="green">💰 ${d.salary}</span><span>${d.rounds.length} Rounds</span></div>
+    <div class="modal-block"><h4>🪜 Round-by-Round Breakdown</h4>
+    ${d.rounds.map((r,ri)=>`<div class="round-card">
+      <h5><span class="round-badge">Round ${ri+1}</span> ${r.name} <span class="round-badge ${r.type==='HR'?'warn':r.type==='Aptitude'||r.type==='Coding'?'pass':''}">${r.type}</span></h5>
+      <p><strong>⏱ Duration:</strong> ${r.duration}</p>
+      <p style="margin-top:6px"><strong>📋 Topics:</strong> ${r.topics}</p>
+      <p style="margin-top:6px"><strong>🎯 Passing Criteria:</strong> ${r.passing}</p>
+      <p style="margin-top:6px"><strong>💡 Tip:</strong> ${r.tips}</p>
+    </div>`).join("")}</div>
+    <div class="modal-block"><h4>📌 What you need ready before applying</h4><ul class="modal-steps">${d.need.map(n=>`<li>${n}</li>`).join("")}</ul></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='How do I prepare for ${d.name} interview? Give me a week-by-week plan';sendChat()">✨ Ask AI: How to crack ${d.name}</button>`;
+  }else if(type==='ugcourse'){
+    const d=ugData[i];
+    html=`<div class="modal-eyebrow">Undergraduate Degree</div><div class="modal-title">🎓 ${d.name}</div>
+    <div class="modal-sub">${d.desc}</div>
+    <div class="modal-pills" style="margin-bottom:20px"><span>${d.duration}</span><span class="gold">${d.type}</span><span class="green">${d.avgSalary}</span></div>
+    <div class="modal-block"><h4>📘 Top Courses in this Degree</h4><div class="modal-pills">${d.topCourses.map(c=>`<span>${c}</span>`).join("")}</div></div>
+    <div class="modal-block"><h4>🚀 Career Paths After This Degree</h4><div class="modal-pills">${d.careerPaths.map(c=>`<span class="green">${c}</span>`).join("")}</div></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='What is the best career path after ${d.name}?';sendChat()">✨ Ask AI about careers after ${d.name}</button>`;
+  }else if(type==='pgcourse'){
+    const d=pgData[i];
+    const examKey=d.topExams?'topExams':(d.specializations?'specializations':null);
+    html=`<div class="modal-eyebrow">Post-Graduate Degree</div><div class="modal-title">🏛️ ${d.name}</div>
+    <div class="modal-sub">${d.desc}</div>
+    <div class="modal-pills" style="margin-bottom:20px"><span>${d.duration}</span><span class="gold">${d.type}</span><span class="green">${d.avgSalary}</span></div>
+    ${d.specializations?`<div class="modal-block"><h4>🔀 Specializations</h4><div class="modal-pills">${d.specializations.map(s=>`<span>${s}</span>`).join("")}</div></div>`:""}
+    ${d.topCourses?`<div class="modal-block"><h4>📘 Key Courses</h4><div class="modal-pills">${d.topCourses.map(c=>`<span>${c}</span>`).join("")}</div></div>`:""}
+    ${d.topExams?`<div class="modal-block"><h4>📝 Entrance Exams</h4><div class="modal-pills">${d.topExams.map(e=>`<span class="gold">${e}</span>`).join("")}</div></div>`:""}
+    <div class="modal-block"><h4>🚀 Career Paths</h4><div class="modal-pills">${d.careerPaths.map(c=>`<span class="green">${c}</span>`).join("")}</div></div>
+    <button class="modal-cta" onclick="closeModal();document.getElementById('chat-input').value='How should I prepare for ${d.name} entrance exams in India?';sendChat()">✨ Ask AI: Entrance exam prep for ${d.name}</button>`;
+  }
+  document.getElementById('modal-content').innerHTML=html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+document.addEventListener('click',e=>{if(e.target.id==='modal-overlay')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ===================== AI CHAT ===================== */
+let chatHistory=[];
+
+const SYSTEM_PROMPT=`You are the NextGen Career Counselor — an expert AI mentor for Indian college students planning their IT and Non-IT careers. You have deep knowledge of:
+- Career roadmaps for Software Developer, Data Analyst, Cloud Engineer, Full Stack Developer, Data Scientist, Cyber Security Analyst
+- Technology learning paths: AI, ML, Data Science, Cloud Computing, Cyber Security, Full Stack Dev, DevOps, SAP, Software Testing, Business Analytics, UI/UX, Blockchain/IoT
+- Indian job market: TCS, Infosys, Wipro, Accenture, Cognizant, Capgemini, Deloitte, EY, Genpact
+- Indian college education: B.Tech CSE, BCA, BSc CS, MCA, MBA, M.Tech, MSc Data Science, MSc Cyber Security
+- Top Indian universities: IITs, NITs, BITS Pilani, VIT, SRM, Manipal, Anna University, IIMs, XLRI
+- Certifications: AWS, Azure, Google, IBM, Meta, CompTIA, Cisco, Oracle, ISTQB, SAP
+- Resume building, ATS optimization, project ideas, internship strategies
+
+Keep responses friendly, structured and actionable. Use bullet points and short sections. Always give practical next steps. When answering about roadmaps, give specific weekly/monthly milestones. When asked about companies, mention their specific interview rounds and what to prepare. Respond in 150-300 words for most questions. For complex roadmaps, up to 400 words is fine. Always end with an encouraging line.`;
+
+async function sendChat(){
+  const input=document.getElementById('chat-input');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  addMessage(msg,'user');
+  chatHistory.push({role:'user',content:msg});
+  showTyping();
+  document.getElementById('chat-send').disabled=true;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system:SYSTEM_PROMPT,
+        messages:chatHistory
+      })
+    });
+    const data=await res.json();
+    hideTyping();
+    const reply=data.content&&data.content[0]&&data.content[0].text?data.content[0].text:"I'm here to help! Could you rephrase your question?";
+    chatHistory.push({role:'assistant',content:reply});
+    addMessage(reply,'bot');
+  }catch(err){
+    hideTyping();
+    addMessage("Sorry, I'm having a moment. Please try again!","bot");
+  }
+  document.getElementById('chat-send').disabled=false;
+}
+
+function quickAsk(q){
+  document.getElementById('chat-input').value=q;
+  document.getElementById('ai-chat-section').scrollIntoView({behavior:'smooth'});
+  setTimeout(sendChat,300);
+}
+
+function addMessage(text,role){
+  const box=document.getElementById('chat-messages');
+  const div=document.createElement('div');
+  div.className=`msg ${role}`;
+  // Convert markdown-like to HTML
+  let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+               .replace(/•/g,'•')
+               .replace(/\n\n/g,'<br><br>')
+               .replace(/\n/g,'<br>');
+  div.innerHTML=html;
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+}
+
+let typingEl=null;
+function showTyping(){
+  const box=document.getElementById('chat-messages');
+  typingEl=document.createElement('div');
+  typingEl.className='msg bot chat-typing';
+  typingEl.innerHTML='<span></span><span></span><span></span>';
+  box.appendChild(typingEl);box.scrollTop=box.scrollHeight;
+}
+function hideTyping(){if(typingEl){typingEl.remove();typingEl=null;}}
+
+/* ===================== CHARTS ===================== */
+let sChart,rChart;
+function initCharts(){
+  const sc=document.getElementById('skillChart');
+  const rc=document.getElementById('readinessChart');
+  if(sChart)sChart.destroy();if(rChart)rChart.destroy();
+  if(sc)sChart=new Chart(sc,{type:'bar',data:{labels:['AI','Cloud','Full Stack','Data Science','Security','DevOps'],datasets:[{label:'Hours logged',data:[38,52,64,30,18,12],backgroundColor:'#1A47CC',borderRadius:8,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f3f4f6'}}}}});
+  if(rc)rChart=new Chart(rc,{type:'doughnut',data:{labels:['Resume Ready','Interview Ready','Projects Ready','Still Building'],datasets:[{data:[82,75,60,40],backgroundColor:['#00C27C','#F5C400','#1A47CC','#e8eaf6'],hoverOffset:6}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},padding:12}}}}});
+}
+
+/* ===================== AUTH ===================== */
+let registeredUsers={};
+function switchTab(t){
+  document.getElementById('tab-login').classList.toggle('active',t==='login');
+  document.getElementById('tab-register').classList.toggle('active',t==='register');
+  document.getElementById('form-login').classList.toggle('active',t==='login');
+  document.getElementById('form-register').classList.toggle('active',t==='register');
+  document.getElementById('login-error').style.display='none';
+  document.getElementById('register-error').style.display='none';
+}
+function handleRegister(){
+  const name=document.getElementById('register-name').value.trim();
+  const email=document.getElementById('register-email').value.trim();
+  const pw=document.getElementById('register-password').value;
+  const err=document.getElementById('register-error');
+  if(!name||!email||!pw){err.textContent="Please fill in all fields.";err.style.display='block';return;}
+  if(pw.length<6){err.textContent="Password must be at least 6 characters.";err.style.display='block';return;}
+  registeredUsers[email.toLowerCase()]={name,pw};
+  err.style.display='none';unlockApp(name);
+}
+function handleLogin(){
+  const email=document.getElementById('login-email').value.trim().toLowerCase();
+  const pw=document.getElementById('login-password').value;
+  const err=document.getElementById('login-error');
+  const user=registeredUsers[email];
+  if(!user){err.textContent="No account found. Please register first.";err.style.display='block';return;}
+  if(user.pw!==pw){err.textContent="Incorrect password. Please try again.";err.style.display='block';return;}
+  err.style.display='none';unlockApp(user.name);
+}
+function unlockApp(name){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').classList.add('unlocked');
+  document.getElementById('nav-username').textContent=name||'Student';
+  document.getElementById('nav-avatar').textContent=(name||'S').charAt(0).toUpperCase();
+  window.scrollTo(0,0);
+  setTimeout(initInteractive,60);
+}
+function handleLogout(){
+  document.getElementById('app').classList.remove('unlocked');
+  document.getElementById('gate').style.display='flex';
+  document.getElementById('login-email').value='';
+  document.getElementById('login-password').value='';
+  chatHistory=[];
+  document.getElementById('chat-messages').innerHTML=`<div class="msg bot">👋 Hi! I'm your <strong>NextGen AI Counselor</strong>. I can help you with:<br><br>• Career roadmaps & guidance<br>• Technology learning paths<br>• Project ideas for your portfolio<br>• College & course selection<br>• Company interview prep<br>• Certifications worth doing<br><br>What would you like to explore today?</div>`;
+  switchTab('login');
+}
+</script>
+</body>
+</html>
